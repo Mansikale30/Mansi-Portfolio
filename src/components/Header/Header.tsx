@@ -2,6 +2,8 @@ import { Container } from './styles'
 import { BrowserRouter as Router } from 'react-router-dom'
 import { NavHashLink, HashLink } from 'react-router-hash-link'
 import { useState } from 'react'
+// @ts-ignore
+
 import Resume from '../../assets/Mansi_Kale_Resume.pdf'
 export function Header() {
   const [isActive, setActive] = useState(false)

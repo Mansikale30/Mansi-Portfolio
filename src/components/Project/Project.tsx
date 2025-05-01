@@ -1,5 +1,7 @@
 import { Container } from "./styles";
 import ScrollAnimation from "react-animate-on-scroll";
+// @ts-ignore
+
 
 
 export function Project() {

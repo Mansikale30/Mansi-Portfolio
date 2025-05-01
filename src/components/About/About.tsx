@@ -10,6 +10,8 @@ import c from "../../assets/c.svg";
 import cpp from "../../assets/cpp.svg";
 import boostrapIcon from "../../assets/bootstrap-icon.svg";
 import ScrollAnimation from "react-animate-on-scroll";
+// @ts-ignore
+
 
 export function About() {
   return (

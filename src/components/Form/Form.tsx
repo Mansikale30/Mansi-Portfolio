@@ -3,6 +3,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import { useEffect, useRef, useState } from 'react';
 import validator from 'validator';
 import emailjs from '@emailjs/browser';
+// @ts-ignore
 
 export function Form() {
   const formRef = useRef<HTMLFormElement | null>(null);

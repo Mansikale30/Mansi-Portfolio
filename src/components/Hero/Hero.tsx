@@ -7,6 +7,8 @@ import linkedin from '../../assets/linkedin.svg'
 import githubIcon from '../../assets/github.svg'
 import Hello from '../../assets/Hello.gif'
 import instagramIcon from '../../assets/instagram.svg'
+// @ts-ignore
+
 export function Hero() {
   return (
     <Container id="home">

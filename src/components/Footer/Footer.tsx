@@ -2,6 +2,8 @@ import { Container } from './styles'
 import linkedin from '../../assets/linkedin.svg'
 import githubIcon from '../../assets/github.svg'
 import instagramIcon from '../../assets/instagram.svg'
+// @ts-ignore
+
 
 export function Footer() {
   return (
