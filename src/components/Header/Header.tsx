@@ -2,7 +2,7 @@ import { Container } from './styles'
 import { BrowserRouter as Router } from 'react-router-dom'
 import { NavHashLink, HashLink } from 'react-router-hash-link'
 import { useState } from 'react'
-import Resume from '../../assets/Vinayak_Singh_Resume.pdf'
+import Resume from '../../assets/Mansi_Kale_Resume.pdf'
 export function Header() {
   const [isActive, setActive] = useState(false)
   function toggleTheme() {
@@ -16,18 +16,11 @@ export function Header() {
     <Container className="header-fixed">
       <Router>
         <HashLink smooth to="#home" className="logo">
-          <span>{"<Vinayak "}</span>
-          <span>{" Singh/>"}</span>
+          <span>{"Portfolio."}</span>
+         
         </HashLink>
-        <input
-          onChange={toggleTheme}
-          className="container_toggle"
-          type="checkbox"
-          id="switch"
-          name="mode"
-        />
-        <label htmlFor="switch">Toggle</label>
-        <nav className={isActive ? 'active' : ''}>
+
+        <nav>
           <NavHashLink smooth to="#home" onClick={closeMenu}>
             Home
           </NavHashLink>
@@ -44,15 +37,7 @@ export function Header() {
             Resume
           </a>
         </nav>
-        <div
-          aria-expanded={isActive ? 'true' : 'false'}
-          aria-haspopup="true"
-          aria-label={isActive ? 'Fechar menu' : 'Abrir menu'}
-          className={isActive ? 'menu active' : 'menu'}
-          onClick={() => {
-            setActive(!isActive)
-          }}
-        ></div>
+
       </Router>
     </Container>
   )

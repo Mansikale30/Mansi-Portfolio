@@ -1,91 +1,91 @@
-import { Container, ContainerSucces } from './styles'
-import { useForm, ValidationError } from '@formspree/react'
-import { toast, ToastContainer } from 'react-toastify'
-import ReCAPTCHA from 'react-google-recaptcha'
-import { useEffect, useState } from 'react'
-import validator from 'validator'
+import { Container, ContainerSucces } from './styles';
+import { toast, ToastContainer } from 'react-toastify';
+import { useEffect, useRef, useState } from 'react';
+import validator from 'validator';
+import emailjs from '@emailjs/browser';
 
 export function Form() {
-  const [state, handleSubmit] = useForm('xknkpqry')
-  const [validEmail, setValidEmail] = useState(false)
-  const [isHuman, setIsHuman] = useState(false)
-  const [message, setMessage] = useState('')
-  function verifyEmail(email: string) {
-    if (validator.isEmail(email)) {
-      setValidEmail(true)
-    } else {
-      setValidEmail(false)
-    }
-  }
+  const formRef = useRef<HTMLFormElement | null>(null);
+  const [submitted, setSubmitted] = useState(false);
+  const [validEmail, setValidEmail] = useState(false);
+  const [message, setMessage] = useState('');
+  const [submitting, setSubmitting] = useState(false);
+
+  // Initialize EmailJS
   useEffect(() => {
-    if (state.succeeded) {
-      toast.success('Email successfully sent!', {
-        position: toast.POSITION.BOTTOM_LEFT,
-        pauseOnFocusLoss: false,
-        closeOnClick: true,
-        hideProgressBar: false,
-        toastId: 'succeeded',
+    emailjs.init('6zp2iUZZbY96EGMDW'); // Public Key
+  }, []);
+
+  function verifyEmail(email:string) {
+    setValidEmail(validator.isEmail(email));
+  }
+
+  const sendEmail = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setSubmitting(true);
+  
+    emailjs
+      .sendForm('service_vauofuj', 'template_mewhain', formRef.current!)
+      .then(() => {
+        setSubmitted(true);
+        setSubmitting(false);
+        toast.success('Email successfully sent!', {
+          position: toast.POSITION.BOTTOM_LEFT,
+          toastId: 'succeeded',
+        });
       })
+      .catch(() => {
+        setSubmitting(false);
+        toast.error('Failed to send message.', {
+          position: toast.POSITION.BOTTOM_LEFT,
+        });
+      });
+  };
+  
+  useEffect(() => {
+    if (submitted && formRef.current) {
+      formRef.current.reset();
     }
-  })
-  if (state.succeeded) {
+  }, [submitted]);
+
+  if (submitted) {
     return (
       <ContainerSucces>
         <h3>Thanks for getting in touch!</h3>
         <button
           onClick={() => {
-            window.scrollTo({ top: 0, behavior: 'smooth' })
+            window.scrollTo({ top: 0, behavior: 'smooth' });
           }}
         >
           Back to the top
         </button>
         <ToastContainer />
       </ContainerSucces>
-    )
+    );
   }
+
   return (
     <Container>
       <h2>Get in touch using the form</h2>
-      <form onSubmit={handleSubmit}>
+      <form ref={formRef} onSubmit={sendEmail}>
         <input
           placeholder="Email"
-          id="email"
           type="email"
-          name="email"
-          onChange={(e) => {
-            verifyEmail(e.target.value)
-          }}
+          name="email" // IMPORTANT: Must match the variable in your EmailJS template
+          onChange={(e) => verifyEmail(e.target.value)}
           required
         />
-        <ValidationError prefix="Email" field="email" errors={state.errors} />
         <textarea
-          required
           placeholder="Send a message to get started."
-          id="message"
           name="message"
-          onChange={(e) => {
-            setMessage(e.target.value)
-          }}
+          onChange={(e) => setMessage(e.target.value)}
+          required
         />
-        <ValidationError
-          prefix="Message"
-          field="message"
-          errors={state.errors}
-        />
-        <ReCAPTCHA
-          sitekey="6Lfj9NYfAAAAAP8wPLtzrsSZeACIcGgwuEIRvbSg"
-          onChange={(e) => {
-            setIsHuman(true)
-          }}
-        ></ReCAPTCHA>
-        <button
-          type="submit"
-          disabled={state.submitting || !validEmail || !message || !isHuman}
-        >
+        <button type="submit" disabled={submitting || !validEmail || !message}>
           Submit
         </button>
       </form>
       <ToastContainer />
     </Container>
-  )
+  );
 }
